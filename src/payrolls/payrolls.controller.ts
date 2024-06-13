@@ -16,4 +16,9 @@ export class PayrollsController {
   findExpenses(@Param('id') id: string) {
     return this.payrollsService.findExpenses(id);
   }
+
+  @Get('settings')
+  findSettings() {
+    return this.payrollsService.findSettings();
+  }
 }

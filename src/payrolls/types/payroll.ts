@@ -16,6 +16,7 @@ export type Payslip = {
   lastName: string;
   isSelected: boolean;
   contracts: ContractExt[];
+  contractsIncluded: IncludedItem[];
   advantagePayList: (IncludedAdvantage | undefined)[];
   currentTimesreports: (IncludedTimesreport | undefined)[];
   deliveries: Delivery[];
