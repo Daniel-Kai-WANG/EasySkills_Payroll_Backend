@@ -72,30 +72,25 @@ describe('PayrollsController', () => {
       const response = await payrollsController.findAll(getPayrollDto);
       // testing the format of response data
       expect(response).toHaveProperty('payslips');
-      expect(response).toHaveProperty('settings');
       expect(response).toHaveProperty('totalItems');
       expect(response.totalItems).toHaveProperty('rows');
 
       // testing the content of payslips
       const payslip: Payslip = response.payslips[0];
-      expect(payslip.id).toBe('14973');
-      expect(payslip.firstName).toBe('Maria Luz A.');
-      expect(payslip.lastName).toBe('ALVARO');
-      expect(payslip.contracts).toHaveLength(1);
-      expect(payslip.advantagePayList).toHaveLength(1);
-      expect(payslip.advantagePayList[0]).toBeNull();
-      expect(payslip.currentTimesreports).toHaveLength(1);
-      expect(payslip.deliveries).toHaveLength(1);
-      expect(payslip.projects).toHaveLength(1);
-      expect(payslip.expenses).toHaveLength(3);
+      expect(payslip).toHaveProperty('contractsIncluded');
+      expect(payslip.id).toBe('15997');
+      expect(payslip.firstName).toBe('Jaime Mendoza');
+      expect(payslip.lastName).toBe('Perfiñan');
+      expect(payslip.contracts).toHaveLength(0);
+      expect(payslip.contractsIncluded).toHaveLength(5);
+      expect(payslip.advantagePayList).toHaveLength(0);
+      expect(payslip.currentTimesreports).toHaveLength(0);
+      expect(payslip.deliveries).toHaveLength(0);
+      expect(payslip.projects).toHaveLength(0);
+      expect(payslip.expenses).toHaveLength(0);
 
       // testing the content of totolItems
       expect(response.totalItems.rows).toBe(791);
-
-      // testing the format of settings
-      expect(response.settings).toHaveProperty('contractTypes');
-      expect(response.settings).toHaveProperty('currencyTypes');
-      expect(response.settings).toHaveProperty('projectTypes');
     });
   });
 });

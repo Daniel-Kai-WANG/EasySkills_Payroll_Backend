@@ -18,7 +18,8 @@ export type IncludedItem =
   | IncludedDocument
   | IncludedOrder
   | IncludedValidation
-  | IncludedDelivery;
+  | IncludedDelivery
+  | IncludedContract;
 
 export type Meta = {
   totals?: Totals;
@@ -34,6 +35,12 @@ export type Meta = {
   expectedValidatorsAllowedForUnValidate?: any;
   expectedValidatorsAllowedForReject?: any;
   missingReports?: string[];
+  warnings?: [
+    {
+      code: string;
+      detail: string;
+    },
+  ];
 };
 
 export type Totals = {
@@ -50,7 +57,15 @@ export type IncludedAgency = {
   attributes: {
     name: string;
     workUnitRate: number;
+    contractsSalaryType?: string;
+    advantageTypes?: AgencyAdvantageType[];
   };
+};
+
+export type AgencyAdvantageType = {
+  reference: number;
+  name: string;
+  frequency: string;
 };
 
 export type IncludedResource = {
@@ -177,9 +192,9 @@ export type IncludedDocument = {
   type: 'document';
   attributes: {
     name: string;
-    category: string;
+    category?: string;
   };
-  relationships: {
+  relationships?: {
     project: {
       data: {
         id: string;
@@ -241,5 +256,39 @@ export type IncludedDelivery = {
     title: string;
     startDate: string;
     endDate: string;
+  };
+};
+
+export type IncludedContract = {
+  id: string;
+  type: 'contract';
+  attributes: {
+    typeOf: number;
+    employeeType: number;
+    startDate: string;
+    endDate: string;
+    monthlySalary: number;
+    classification: string;
+    contractAverageDailyCost: number;
+    contractAverageDailyProductionCost: number;
+    currency: number;
+    exchangeRate: number;
+    currencyAgency: number;
+    exchangeRateAgency: number;
+    advantageTypes: [];
+  };
+  relationships: {
+    agency: {
+      data: {
+        id: number;
+        type: 'agency';
+      };
+    };
+    parentContract: {
+      data: null;
+    };
+    childContract: {
+      data: null;
+    };
   };
 };

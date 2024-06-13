@@ -10,6 +10,7 @@ import { Expenses } from './types/expenses';
 import { SettingApiResponse, SettingsData } from './types/setting';
 import { Timesheet } from './types/timesheet';
 import { TimesReport } from './types/times-report';
+import { Administrative } from './types/administrative';
 
 @Injectable()
 export class PayrollsService {
@@ -29,24 +30,33 @@ export class PayrollsService {
         })
         .toPromise();
 
-      const [resourcesResponse, contractsResponse, settings] = await Promise.all([
-        resourcesRequest,
-        contractsRequest,
-        this.findSettings(),
-      ]);
+      const [resourcesResponse, contractsResponse] = await Promise.all([resourcesRequest, contractsRequest]);
 
       const totalItems = resourcesResponse.data.meta.totals;
 
       const resourcesRelated = await Promise.all(
         resourcesResponse.data.data.map(async (resource) => {
-          const [{ deliveries, included: deliveriesIncluded }, { projects, included: projectsIncluded }, { expenses }] =
-            await Promise.all([
-              this.findDeliveries(resource.id),
-              this.findProjects(resource.id),
-              this.findExpenses(resource.id),
-            ]);
+          const [
+            { included: contractsIncluded },
+            { deliveries, included: deliveriesIncluded },
+            { projects, included: projectsIncluded },
+            { expenses },
+          ] = await Promise.all([
+            this.findPersonalContracts(resource.id),
+            this.findDeliveries(resource.id),
+            this.findProjects(resource.id),
+            this.findExpenses(resource.id),
+          ]);
 
-          return { id: resource.id, deliveries, deliveriesIncluded, projects, projectsIncluded, expenses };
+          return {
+            id: resource.id,
+            deliveries,
+            deliveriesIncluded,
+            projects,
+            projectsIncluded,
+            expenses,
+            contractsIncluded,
+          };
         }),
       );
 
@@ -72,7 +82,8 @@ export class PayrollsService {
 
         const targetResourceRelated = resourcesRelated.find((resourceRelated) => resourceRelated.id === resource.id);
 
-        const { deliveries, deliveriesIncluded, projects, projectsIncluded, expenses } = targetResourceRelated;
+        const { contractsIncluded, deliveries, deliveriesIncluded, projects, projectsIncluded, expenses } =
+          targetResourceRelated;
 
         return {
           id: resource.id,
@@ -80,6 +91,7 @@ export class PayrollsService {
           lastName: resource.attributes.lastName,
           isSelected: false,
           contracts: payslipContracts,
+          contractsIncluded,
           advantagePayList,
           currentTimesreports,
           deliveries,
@@ -90,10 +102,27 @@ export class PayrollsService {
         };
       });
 
-      return { payslips, settings, totalItems };
+      return { payslips, totalItems };
     } catch (error) {
       console.error('Error fetching payroll data:', error);
       throw new HttpException('Failed to fetch payroll data', error.response?.status || 500);
+    }
+  }
+
+  async findPersonalContracts(id: string) {
+    try {
+      const administrativeResponse = await this.httpService
+        .get<ApiResponse<Administrative>>(`/resources/${id}/administrative`)
+        .toPromise();
+
+      return { included: administrativeResponse?.data.included };
+    } catch (error) {
+      if (error.response?.status === 403) {
+        console.warn(`Access denied for expenses of resource ${id}`);
+        return { included: [] };
+      }
+      console.error('Error fetching expenses:', error);
+      throw new Error(`Failed to fetch expenses for resource ${id}: ${error.message}`);
     }
   }
 
