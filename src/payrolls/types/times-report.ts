@@ -15,7 +15,7 @@ export type TimesReportAttributes = {
   state: string;
   regularTimes: WorkUnit[];
   exceptionalTimes: any[];
-  workplaceTimes: WorkPlaceTime[];
+  workplaceTimes?: WorkPlaceTime[];
   plannedTimes: any[];
   absencesTimes: AbsenceTime[];
 };
