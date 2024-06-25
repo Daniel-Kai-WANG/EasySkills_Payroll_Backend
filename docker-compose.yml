@@ -1,40 +1,50 @@
-version: '3.8'
-services:
-  # db:
-  #   image: mysql:latest
-  #   # command: --default-authentication-plugin=mysql_native_password
-  #   # cap_add:
-  #   #   - SYS_NICE
-  #   restart: always
-  #   environment:
-  #     # - MYSQL_USER=easyskill
-  #     # - MYSQL_PASSWORD=123456789
-  #     - MYSQL_DATABASE=easyskill
-  #     - MYSQL_ROOT_PASSWORD=123456789
-  #   ports:
-  #     - '3306:3306'
-  #   # volumes:
-  #   #   - db:/var/lib/mysql
-  #   #   - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
-  # # volumes:
-  # #   db:
-  # #     driver: local
+# version: '3.8'
+# services:
+#   # db:
+#   #   image: mysql:latest
+#   #   # command: --default-authentication-plugin=mysql_native_password
+#   #   # cap_add:
+#   #   #   - SYS_NICE
+#   #   restart: always
+#   #   environment:
+#   #     # - MYSQL_USER=easyskill
+#   #     # - MYSQL_PASSWORD=123456789
+#   #     - MYSQL_DATABASE=easyskill
+#   #     - MYSQL_ROOT_PASSWORD=123456789
+#   #   ports:
+#   #     - '3306:3306'
+#   #   # volumes:
+#   #   #   - db:/var/lib/mysql
+#   #   #   - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+#   # # volumes:
+#   # #   db:
+#   # #     driver: local
 
-  mysql-master:
-    # We'll use the latest MySQL image from Docker Hub
-    image: mysql:latest
-    # Give it a cool name (mysql-master is pretty clear, right?)
-    container_name: mysql-master
-    # Extra commands to configure the master for replication
-    command: --server-id=1 --log-bin=mysql-bin --binlog-format=row
-    # Set some environment variables for passwords and database details
-    # Remember to replace these with your own strong passwords!
+#   mysql-master:
+#     # We'll use the latest MySQL image from Docker Hub
+#     image: mysql:latest
+#     # Give it a cool name (mysql-master is pretty clear, right?)
+#     container_name: mysql-master
+#     # Extra commands to configure the master for replication
+#     command: --server-id=1 --log-bin=mysql-bin --binlog-format=row
+#     # Set some environment variables for passwords and database details
+#     # Remember to replace these with your own strong passwords!
+#     environment:
+#       MYSQL_ROOT_PASSWORD: 123456789
+#       MYSQL_DATABASE: easyskill # Feel free to change this database name
+#       MYSQL_USER: easyskill # This user will handle replication
+#       MYSQL_PASSWORD: 123456789
+#     # Map the container port (3306) to your host machine's port (also 3306)
+#     # This lets you access the master server from your machine
+#     ports:
+#       - '3306:3306'
+
+version: '3'
+
+services:
+  mongodb:
+    image: mongo:latest
     environment:
-      MYSQL_ROOT_PASSWORD: 123456789
-      MYSQL_DATABASE: easyskill # Feel free to change this database name
-      MYSQL_USER: easyskill # This user will handle replication
-      MYSQL_PASSWORD: 123456789
-    # Map the container port (3306) to your host machine's port (also 3306)
-    # This lets you access the master server from your machine
+      - MONGODB_DATABASE="test"
     ports:
-      - '3306:3306'
+      - 27017:27017

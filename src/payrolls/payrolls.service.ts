@@ -11,10 +11,16 @@ import { SettingApiResponse, SettingsData } from './types/setting';
 import { Timesheet } from './types/timesheet';
 import { TimesReport } from './types/times-report';
 import { Administrative } from './types/administrative';
+import { InjectModel } from '@nestjs/mongoose';
+import { WorkUnit } from './schemas/work-unit.schema';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class PayrollsService {
-  constructor(private readonly httpService: HttpService) {}
+  constructor(
+    private readonly httpService: HttpService,
+    @InjectModel('WorkUnit') private workUnitModel: Model<WorkUnit>,
+  ) {}
 
   async findAll(getPayrollDto: GetPayrollDto) {
     try {
