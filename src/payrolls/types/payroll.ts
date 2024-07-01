@@ -1,4 +1,4 @@
-import { Delivery } from './delivery';
+import { DeliveryDto } from '../../deliveries/dto/delivery.dto';
 import { Expenses } from './expenses';
 import { Project } from './project';
 import {
@@ -19,7 +19,7 @@ export type Payslip = {
   contractsIncluded: IncludedItem[];
   advantagePayList: (IncludedAdvantage | undefined)[];
   currentTimesreports: (IncludedTimesreport | undefined)[];
-  deliveries: Delivery[];
+  deliveries: DeliveryDto[];
   projects: Project[];
   expenses: Expenses[];
   deliveriesIncluded?: IncludedItem[];

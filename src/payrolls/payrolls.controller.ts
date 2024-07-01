@@ -5,20 +5,20 @@ import { GetPayrollDto } from './dto/get-payroll.dto';
 
 @Controller('payrolls')
 export class PayrollsController {
-  constructor(private readonly payrollsService: PayrollsService) {}
+  constructor(private payrollsService: PayrollsService) {}
 
-  @Get()
-  findAll(@Query() getPayrollDto: GetPayrollDto) {
-    return this.payrollsService.findAll(getPayrollDto);
-  }
+  // @Get()
+  // findAll(@Query() getPayrollDto: GetPayrollDto) {
+  //   return this.payrollsService.findAll(getPayrollDto);
+  // }
 
-  @Get('expenses/:id')
-  findExpenses(@Param('id') id: string) {
-    return this.payrollsService.findExpenses(id);
-  }
+  // @Get('expenses/:id')
+  // findExpenses(@Param('id') id: string) {
+  //   return this.payrollsService.findExpenses(id);
+  // }
 
-  @Get('settings')
-  findSettings() {
-    return this.payrollsService.findSettings();
-  }
+  // @Get('settings')
+  // findSettings() {
+  //   return this.payrollsService.findSettings();
+  // }
 }

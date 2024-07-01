@@ -1,4 +1,4 @@
-export type Delivery = {
+export type DeliveryDto = {
   id: string;
   type: 'delivery';
   attributes: DeliveryAttributes;

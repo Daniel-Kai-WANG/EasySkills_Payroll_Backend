@@ -1,4 +1,4 @@
-export type Administrative = {
+export type AdministrativeDto = {
   id: string;
   type: 'resource';
   attributes: AdministrativeAttributes;

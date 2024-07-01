@@ -1,12 +1,8 @@
-export type Resource = {
+export type ResourceDto = {
   id: string;
   type: 'resource';
   attributes: ResourceAttributes;
   relationships: ResourceRelationships;
-};
-
-export type ResourceExt = Resource & {
-  isSelected: boolean;
 };
 
 export type ResourceAttributes = {

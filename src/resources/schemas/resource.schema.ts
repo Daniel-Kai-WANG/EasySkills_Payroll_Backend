@@ -1,16 +1,27 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
 import { Reference } from './reference.schema';
+import { IncludedContract, IncludedDelivery } from 'src/payrolls/types/types';
+import { DeliveryDto } from 'src/deliveries/dto/delivery.dto';
 
 export type ResourceDocument = HydratedDocument<Resource>;
 
-@Schema()
+@Schema({ collection: 'testResource' })
 export class Resource {
   @Prop({ type: String, required: true, unique: true })
   id: string;
 
   @Prop()
   type: 'resource';
+
+  @Prop()
+  contracts: IncludedContract[];
+
+  @Prop()
+  deliveries: DeliveryDto[];
+
+  @Prop()
+  deliveriesIncluded: IncludedDelivery[];
 
   @Prop()
   canShowTechnicalData: boolean;
